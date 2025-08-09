@@ -1,6 +1,6 @@
 import ProductCard from "./product-card";
 
-function ProductList({query , filters , products , setProducts}) {
+export default function ProductList({query , filters , products , setProducts}) {
 
   const filteredProducts = products.filter((obj) => {
     const matchesQuery = obj.name.toLowerCase().includes(query.toLowerCase());
@@ -12,18 +12,26 @@ function ProductList({query , filters , products , setProducts}) {
     return matchesQuery && matchesCategory && matchesPrice;
   });
 
+    let content;
 
-  // add a condition for the query
-
-  return (
-    <ul>
-      {filteredProducts.map((obj) => (
+    if (query.length > 2) {
+        content = filteredProducts.map((obj) => (
         <ProductCard
-          key={obj.id}
-          product={obj}
-          setProducts={setProducts}
+        key={obj.id}
+        product={obj}
+        setProducts={setProducts}
         />
-      ))}
-    </ul>
-  );
+    ));
+    } else {
+        content = filteredProducts.map((obj) => (
+        <ProductCard
+        key={obj.id}
+        product={obj}
+        setProducts={setProducts}
+        />
+    ));
+    }
+
+    return <ul>{content}</ul>;
+
 }

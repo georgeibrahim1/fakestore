@@ -1,23 +1,20 @@
 import { useEffect, useState } from "react";
 import ProductList from "./components/products-list"
+import NavBar from "./components/navbar";
 
+export default function App() {
 
-function App() {
-  // products , setProducts
-  // filters , setFilters
+  const AllProductsInfo = {
+    Allcatogeries: [],
+    minPriceEver: 0,
+    maxPriceEver: 0,
+  }
 
   const [products,setProducts] = useState([]);
-  const [filters,setFilters] = useState({});
+  const [filters,setFilters] = useState({categoryArr:[] , minPrice:0 , maxPrice:0});
   const [query , setQuery] = useState("");
   const [Loading,setLoading] = useState(false);
   const [IsError,setIsError] = useState("");
-
-  /*
-    filters : 
-      - catogery : [] ??
-      - min price -> -infinity
-      - max price -> infinity
-  */
 
 
   useEffect(() => {
@@ -29,11 +26,22 @@ function App() {
 
         if(!res.ok) throw new Error("");
 
-        for(let i = 0 ; i < data.size() ; i++) {
+        for(let i = 0 ; i < data.size() ; i++) { 
           data[i].cartItems = 0; // add a new key
-          // get the catogeries array and the min and max price for the read only filters section
+          AllProductsInfo.Allcatogeries.push(data[i].category);
+          AllProductsInfo.minPriceEver = Math.min(AllProductsInfo.minPriceEver,data[i].price);
+          AllProductsInfo.maxPriceEver = Math.max(AllProductsInfo.maxPriceEver,data[i].price);
         }
+        
+        setFilters((obj) => {
+          const setUpFilter = {
+            ...obj,
+            minPrice: AllProductsInfo.minPriceEver,
+            maxPrice: AllProductsInfo.maxPriceEver
+          }
 
+          return setUpFilter;
+        });
         setProducts([...data , products]); // to add to the intial products
         setLoading(false);
 
@@ -46,13 +54,27 @@ function App() {
 
   }, [])
 
-
-  return (
-    <ProductList >
-
-    </ProductList>
-  );
-
+let content;
+if (!IsError) {
+    if (Loading) {
+        content = <p>Loading...</p>;
+    } else {
+        content = (
+            <>
+                <NavBar products={products} setProducts={setProducts} />
+                <ProductList
+                    query={query}
+                    filters={filters}
+                    products={products}
+                    setProducts={setProducts}
+                />
+            </>
+        );
+    }
+} else {
+    content = <p>Something went wrong. Please try again later.</p>;
 }
 
-export default App;
+return <div>{content}</div>;
+
+}
