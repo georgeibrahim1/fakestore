@@ -54,27 +54,27 @@ export default function App() {
 
   }, [])
 
-let content;
-if (!IsError) {
-    if (Loading) {
-        content = <p>Loading...</p>;
-    } else {
-        content = (
-            <>
-                <NavBar products={products} setProducts={setProducts} />
-                <ProductList
-                    query={query}
-                    filters={filters}
-                    products={products}
-                    setProducts={setProducts}
-                />
-            </>
-        );
-    }
-} else {
-    content = <p>Something went wrong. Please try again later.</p>;
-}
+  let content;
+  if (!IsError) {
+      if (Loading) {
+          content = <p>Loading...</p>;
+      } else {
+          content = (
+              <>
+                  <NavBar query={query} setQuery={setQuery}/>
+                  <ProductList
+                      query={query}
+                      filters={filters}
+                      products={products}
+                      setProducts={setProducts}
+                  />
+              </>
+          );
+      }
+  } else {
+      content = <p className="text-3xl font-bold underline">Something went wrong. Please try again later.</p>;
+  }
 
-return <div>{content}</div>;
+  return <div>{content}</div>;
 
 }
