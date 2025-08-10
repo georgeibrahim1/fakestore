@@ -13,71 +13,68 @@ export default function NavBar({AllProductsInfo, filters, setFilters , query, se
             FakeStore
         </div>
 
-        <div className="flex-1 flex">
+        <div className="flex-1 flex gap-3 justify-center relative">
             <SearchBar query={query} setQuery={setQuery} />
+            <div className="relative">
+                <button
+                        className={`px-4 py-2 rounded-lg transition font-medium ${
+                            isOpenFilter
+                                ? "bg-red-500 text-white hover:bg-red-600"
+                                : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                        }`}
+                        onClick={() => setIsOpenFilter((prev) => {
+                            if(prev) {
+                                return !prev;
+                            } else {
+                                if(isOpenCart) {
+                                    setIsOpenCart(false);
+                                }
+                                
+                                return !prev;
+                            }
+                        })}
+                    >
+                        {isOpenFilter ? <span>Close&nbsp;</span> : "Filters"}
+                    </button>
+                    {isOpenFilter && (
+                        <FiltersPage
+                            AllProductsInfo={AllProductsInfo}
+                            filters={filters}
+                            setFilters={setFilters}
+                        />
+                    )}
+            </div>
         </div>
 
-<div className="flex gap-3 relative max-sm:hidden">
-    <button
-        className={`px-4 py-2 rounded-lg transition font-medium ${
-            isOpenFilter
-                ? "bg-red-500 text-white hover:bg-red-600"
-                : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-        }`}
-        onClick={() => setIsOpenFilter((prev) => {
-            if(prev) {
-                return !prev;
-            } else {
-                if(isOpenCart) {
-                    setIsOpenCart(false);
-                }
-                
-                return !prev;
-            }
-        })}
-    >
-        {isOpenFilter ? "Close" : "Filters"}
-    </button>
+            <div className="relative">
+                <button
+                    className={`px-4 py-2 rounded-lg transition font-medium ${
+                        isOpenCart
+                            ? "bg-red-500 text-white hover:bg-red-600"
+                            : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                    }`}
+                    onClick={() => setIsOpenCart((prev) => {
+                    if(prev) {
+                        return !prev;
+                    } else {
+                        if(isOpenFilter) {
+                            setIsOpenFilter(false);
+                        }
+                        
+                        return !prev;
+                    }
+                })}
+                >
+                    {isOpenCart ? "Close" : <span>&nbsp;Cart&nbsp;</span>}
+                </button>
 
-    {isOpenFilter && (
-        <FiltersPage
-            AllProductsInfo={AllProductsInfo}
-            filters={filters}
-            setFilters={setFilters}
-        />
-    )}
-
-    <div className="relative">
-        <button
-            className={`px-4 py-2 rounded-lg transition font-medium ${
-                isOpenCart
-                    ? "bg-red-500 text-white hover:bg-red-600"
-                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-            }`}
-            onClick={() => setIsOpenCart((prev) => {
-            if(prev) {
-                return !prev;
-            } else {
-                if(isOpenFilter) {
-                    setIsOpenFilter(false);
-                }
-                
-                return !prev;
-            }
-        })}
-        >
-            {isOpenCart ? "Close" : "Cart"}
-        </button>
-
-        {isOpenCart && (
-            <CartList
-                products={products}
-                setProducts={setProducts}
-            />
-        )}
-    </div>
-    
-</div>
+                {isOpenCart && (
+                    <CartList
+                        products={products}
+                        setProducts={setProducts}
+                    />
+                )}
+            </div>
     </div>
     );
 }
