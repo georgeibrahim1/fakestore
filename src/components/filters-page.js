@@ -13,8 +13,11 @@ export default function FiltersPage({ AllProductsInfo, filters, setFilters }) {
     }
 
     function handleOnChangeMin(e) {
-        const value = Number(e.target.value);
-        
+        let value = Number(e.target.value);
+
+        if (value > AllProductsInfo.maxPriceEver) value = AllProductsInfo.maxPriceEver;
+        if (value < AllProductsInfo.minPriceEver) value = AllProductsInfo.minPriceEver;
+
         setFilters(prev => ({
             ...prev,
             minPrice: value

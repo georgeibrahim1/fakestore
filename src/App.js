@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import ProductList from "./components/products-list"
 import NavBar from "./components/navbar";
 
-export default function App() {
-
   const AllProductsInfo = {
     Allcatogeries: [],
-    minPriceEver: Infinity,
-    maxPriceEver: -Infinity,
+    minPriceEver: Number.MAX_SAFE_INTEGER,
+    maxPriceEver: Number.MIN_SAFE_INTEGER,
   };
+
+export default function App() {
 
   const [products,setProducts] = useState([]);
   const [filters,setFilters] = useState({categoryArr:[] , minPrice:0 , maxPrice:0});
