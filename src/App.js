@@ -60,7 +60,23 @@ export default function App() {
   let content;
   if (!IsError) {
       if (Loading) {
-          content = <p>Loading...</p>;
+        content = (
+          <>
+          <NavBar 
+            query={query} 
+            setQuery={setQuery} 
+            products={products} 
+            setProducts={setProducts}
+            AllProductsInfo={AllProductsInfo}
+            filters={filters}
+            setFilters={setFilters}
+          />
+          <div className="flex items-center justify-center h-32">
+            <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <span className="ml-3 text-blue-600 font-medium animate-pulse">Loading...</span>
+          </div>
+          </>
+        );
       } else {
           content = (
               <>
@@ -83,7 +99,13 @@ export default function App() {
           );
       }
   } else {
-      content = <p className="text-3xl font-bold underline">Something went wrong. Please try again later.</p>;
+      content = (
+        <div className="flex items-center justify-center h-32">
+          <p className="text-red-600 text-lg font-semibold bg-red-100 border border-red-300 rounded-lg px-4 py-2">
+            ❌ Something went wrong. Please try again later.
+          </p>
+        </div>
+      );
   }
 
   return <div>{content}</div>;

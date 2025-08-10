@@ -8,16 +8,16 @@ export default function NavBar({AllProductsInfo, filters, setFilters , query, se
     const [isOpenFilter, setIsOpenFilter] = useState(false);
 
     return (
-    <div className="flex items-center justify-between px-6 py-4 bg-white shadow-md gap-2">
-        <div className="logo text-3xl font-bold text-blue-600" style={{ fontFamily: 'Poppins, sans-serif' }}>
+    <div className="flex max-sm:flex-col items-center justify-between px-6 py-4 bg-white shadow-md gap-2">
+        <div className="logo text-3xl font-bold text-blue-600" style={{ fontFamily: 'Poppins, sans-serif', cursor: 'pointer'}} onClick={() => {window.location.reload();}}>
             FakeStore
         </div>
 
-        <div className="flex-1 flex justify-center">
+        <div className="flex-1 flex">
             <SearchBar query={query} setQuery={setQuery} />
         </div>
 
-<div className="flex gap-3 relative">
+<div className="flex gap-3 relative max-sm:hidden">
     <button
         className={`px-4 py-2 rounded-lg transition font-medium ${
             isOpenFilter
@@ -36,7 +36,7 @@ export default function NavBar({AllProductsInfo, filters, setFilters , query, se
             }
         })}
     >
-        {isOpenFilter ? "Close Filters" : "Filters"}
+        {isOpenFilter ? "Close" : "Filters"}
     </button>
 
     {isOpenFilter && (
@@ -66,7 +66,7 @@ export default function NavBar({AllProductsInfo, filters, setFilters , query, se
             }
         })}
         >
-            {isOpenCart ? "Close Cart" : "Cart"}
+            {isOpenCart ? "Close" : "Cart"}
         </button>
 
         {isOpenCart && (
@@ -76,6 +76,7 @@ export default function NavBar({AllProductsInfo, filters, setFilters , query, se
             />
         )}
     </div>
+    
 </div>
     </div>
     );

@@ -12,13 +12,22 @@ export default function ProductList({query , filters , products , setProducts}) 
     return matchesQuery && matchesCategory && matchesPrice;
   });
 
-    let content = filteredProducts.map((obj) => (
+  let content;
+  if(filteredProducts.length>0) {
+    content = filteredProducts.map((obj) => (
         <ProductCard
         key={obj.id}
         product={obj}
         setProducts={setProducts}
         />
     ));
+  } else {
+    content = (
+        <div className="text-center py-10 text-gray-500 text-lg font-semibold">
+        No products found.
+        </div>
+    );
+  }
 
     return <ul className="flex flex-wrap gap-4 justify-center py-5">{content}</ul>;
 
