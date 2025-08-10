@@ -6,15 +6,15 @@ export default function App() {
 
   const AllProductsInfo = {
     Allcatogeries: [],
-    minPriceEver: 0,
-    maxPriceEver: 0,
-  }
+    minPriceEver: Infinity,
+    maxPriceEver: -Infinity,
+  };
 
   const [products,setProducts] = useState([]);
   const [filters,setFilters] = useState({categoryArr:[] , minPrice:0 , maxPrice:0});
   const [query , setQuery] = useState("");
   const [Loading,setLoading] = useState(false);
-  const [IsError,setIsError] = useState("");
+  const [IsError,setIsError] = useState(false);
 
 
   useEffect(() => {
@@ -26,9 +26,10 @@ export default function App() {
 
         if(!res.ok) throw new Error("");
 
-        for(let i = 0 ; i < data.size() ; i++) { 
+        for(let i = 0 ; i < data.length ; i++) { 
           data[i].cartItems = 0; // add a new key
-          AllProductsInfo.Allcatogeries.push(data[i].category);
+          if(!AllProductsInfo.Allcatogeries.includes(data[i].category))
+            AllProductsInfo.Allcatogeries.push(data[i].category);
           AllProductsInfo.minPriceEver = Math.min(AllProductsInfo.minPriceEver,data[i].price);
           AllProductsInfo.maxPriceEver = Math.max(AllProductsInfo.maxPriceEver,data[i].price);
         }
@@ -42,11 +43,13 @@ export default function App() {
 
           return setUpFilter;
         });
-        setProducts([...data , products]); // to add to the intial products
+
+        console.log(AllProductsInfo);
+        setProducts(data); // to add to the intial products
         setLoading(false);
 
       } catch(err) {
-        setIsError(err.message);
+        setIsError(true);
       }
     }
 
@@ -61,7 +64,15 @@ export default function App() {
       } else {
           content = (
               <>
-                  <NavBar query={query} setQuery={setQuery}/>
+                  <NavBar 
+                    query={query} 
+                    setQuery={setQuery} 
+                    products={products} 
+                    setProducts={setProducts}
+                    AllProductsInfo={AllProductsInfo}
+                    filters={filters}
+                    setFilters={setFilters}
+                  />
                   <ProductList
                       query={query}
                       filters={filters}
